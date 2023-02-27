@@ -1,0 +1,123 @@
+LOGIC OF CODE:
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+		
+		public class JobScheduler {
+		    static class Job {
+		        int startTime;
+		        int endTime;
+		        int profit;
+
+		        public Job(int startTime, int endTime, int profit) {
+		            this.startTime = startTime;
+		            this.endTime = endTime;
+		            this.profit = profit;
+		        }
+		    }
+		    public static void main(String[] args) {
+		        Scanner scanner = new Scanner(System.in);
+		        System.out.println("Enter the number of Jobs");
+		        int n = scanner.nextInt();
+		        System.out.println("Enter job start time, end time, and earnings");
+		        ArrayList<Job> jobs = new ArrayList<>();
+
+		        // Read jobs
+		        for (int i = 0; i < n; i++) {
+		           // System.out.println("Enter job start time, end time, and earnings");
+		            int startTime = scanner.nextInt();
+		            int endTime = scanner.nextInt();
+		            int profit = scanner.nextInt();
+		            jobs.add(new Job(startTime, endTime, profit));
+		        }
+		        // Sort jobs by end time
+		        Collections.sort(jobs, Comparator.comparingInt(j -> j.endTime));
+
+		        int maxProfit = 0;
+		        ArrayList<Job> selectedJobs = new ArrayList<>();
+
+		        // Greedy algorithm to select jobs
+		        for (Job job : jobs) {
+		            if (selectedJobs.isEmpty() || job.startTime >= selectedJobs.get(selectedJobs.size() - 1).endTime) {
+		                // This job can be selected
+		                selectedJobs.add(job);
+		                maxProfit += job.profit;
+		            }
+		        }
+
+		        // Calculate remaining jobs and earnings
+		        int remainingJobs = n - selectedJobs.size();
+		        int remainingProfit = 0;
+		        for (Job job : jobs) {
+		            if (!selectedJobs.contains(job)) {
+		                remainingProfit += job.profit;
+		            }
+		        }
+
+		        // Print output
+		        System.out.println("The number of tasks and earnings available for others");
+		        System.out.println("Task: " + remainingJobs);
+		        System.out.println("Earnings: " + remainingProfit);
+	}
+}
+
+
+OUTPUT:
+SAMPLE INPUT:1
+Enter the number of Jobs
+3
+Enter job start time, end time, and earnings
+0900
+1030
+100
+1000
+1200
+500
+1100
+1200
+300
+
+SAMPLE INPUT:1
+The number of tasks and earnings available for others
+Task: 1
+Earnings: 500
+------------------------------------------------------------------------------------------------------
+SAMPLE INPUT:2
+Enter the number of Jobs
+3
+Enter job start time, end time, and earnings
+0900
+1000
+250
+0945
+1200
+550
+1130
+1500
+150
+
+SAMPLE INPUT:2
+The number of tasks and earnings available for others
+Task: 1
+Earnings: 550
+-------------------------------------------------------------------------------------------------------
+SAMPLE INPUT:3
+Enter the number of Jobs
+3
+Enter job start time, end time, and earnings
+0900
+1030
+100
+1000
+1200
+100
+1100
+1200
+100
+
+SAMPLE INPUT:3
+The number of tasks and earnings available for others
+Task: 1
+Earnings: 100
